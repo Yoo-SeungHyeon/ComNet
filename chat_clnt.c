@@ -17,7 +17,8 @@ void error_handling(char * msg);
 //전역변수 선언
 char name[NAME_SIZE]="[DEFAULT]";
 char msg[BUF_SIZE];
-	
+char nickname[NAME_SIZE];
+
 int main(int argc, char *argv[])
 {
 	int sock; //서버와 연결할 소켓 변수 선언
@@ -32,6 +33,8 @@ int main(int argc, char *argv[])
 	 }
 	
 	sprintf(name, "[%s]", argv[3]); //입력받은 Name을 이용해 전송할 메세지 앞에 넣을 별명 생성
+	sprintf(nickname, "%s join\n", argv[3]);
+
 	sock=socket(PF_INET, SOCK_STREAM, 0); //PF_INET = IPv4, SOCK_STREAM + 0 = TCP
 	
 	memset(&serv_addr, 0, sizeof(serv_addr)); //구조체의 모든 값 0으로 선언
@@ -41,7 +44,9 @@ int main(int argc, char *argv[])
 	  
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1) //연결 에러 발생시 실행
 		error_handling("connect() error");
-	
+	else{
+		write(sock, nickname, strlen(nickname));
+	}
 	pthread_create(&snd_thread, NULL, send_msg, (void*)&sock); //전송 쓰레드 생성
 	pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock); //수신 쓰레드 생성
 	pthread_join(snd_thread, &thread_return); //전송 쓰레드 종료되지 않게 Block
