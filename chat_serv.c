@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	
 		pthread_create(&t_id, NULL, handle_clnt, (void*)&clnt_sock); //클라이언트 별 쓰레드 및 handle_clnt 실행
 		pthread_detach(t_id); //클라이언트 쓰레드 종료 후 자동 으로 자원 반환
-		printf("Connected client IP: %s \n", inet_ntoa(clnt_adr.sin_addr)); //연결한 클라이언트의 IP 출력
+		printf("--------------------------------\nConnected client IP: %s \n", inet_ntoa(clnt_adr.sin_addr)); //연결한 클라이언트의 IP 출력
 	}
 	close(serv_sock); //서버 소켓 종료
 	return 0;
@@ -72,13 +72,13 @@ void * handle_clnt(void * arg)
 	int str_len=0, i; //길이 변수 선언
 	char msg[BUF_SIZE]; //메세지 배열 선언
 
-	if(1){
+	if(1){ // connect가 동작할 때 한번만 실행
 		char msg1[BUF_SIZE];
 		char msg2[BUF_SIZE];
-		read(clnt_sock, msg1, sizeof(msg1));
+		read(clnt_sock, msg1, sizeof(msg1)); //msg1으로 값을 받아 값을 정리하기 좋게 만든다.
 		sprintf(msg2, "%s join the chat\n", msg1);
 		printf("%s", msg2);
-		send_msg(msg2, strlen(msg2));
+		send_msg(msg2, strlen(msg2)); //join을 다른 사용자에게 알린다.
 	}
 
 	while((str_len=read(clnt_sock, msg, sizeof(msg)))!=0) //큐에 메세지가 존재한다면

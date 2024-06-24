@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	 }
 	
 	sprintf(name, "[%s]", argv[3]); //입력받은 Name을 이용해 전송할 메세지 앞에 넣을 별명 생성
-	sprintf(nickname, "%s", argv[3]);
+	sprintf(nickname, "%s", argv[3]); //connect가 성공하면 전송할 이름
 
 	sock=socket(PF_INET, SOCK_STREAM, 0); //PF_INET = IPv4, SOCK_STREAM + 0 = TCP
 	
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1) //연결 에러 발생시 실행
 		error_handling("connect() error");
 	else{
-		write(sock, nickname, strlen(nickname));
+		write(sock, nickname, strlen(nickname)); //connect 성공시 한번만 실행하는 write동작. 사용자명을 보낸다.
 	}
 	pthread_create(&snd_thread, NULL, send_msg, (void*)&sock); //전송 쓰레드 생성
 	pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock); //수신 쓰레드 생성
