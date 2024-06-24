@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	 }
 	
 	sprintf(name, "[%s]", argv[3]); //입력받은 Name을 이용해 전송할 메세지 앞에 넣을 별명 생성
-	sprintf(nickname, "%s join\n", argv[3]);
+	sprintf(nickname, "%s", argv[3]);
 
 	sock=socket(PF_INET, SOCK_STREAM, 0); //PF_INET = IPv4, SOCK_STREAM + 0 = TCP
 	

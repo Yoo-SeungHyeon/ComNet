@@ -74,9 +74,11 @@ void * handle_clnt(void * arg)
 
 	if(1){
 		char msg1[BUF_SIZE];
+		char msg2[BUF_SIZE];
 		read(clnt_sock, msg1, sizeof(msg1));
-		printf("%s", msg1);
-		send_msg(msg1, strlen(msg1));
+		sprintf(msg2, "%s join the chat\n", msg1);
+		printf("%s", msg2);
+		send_msg(msg2, strlen(msg2));
 	}
 
 	while((str_len=read(clnt_sock, msg, sizeof(msg)))!=0) //큐에 메세지가 존재한다면
